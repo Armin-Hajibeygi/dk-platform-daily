@@ -18,8 +18,8 @@ def create_ticket_endpoint(
     sprint: bool = Form(True),
     estimate: int = Form(0),
 ):
-    new_ticket = create_ticket(name, sprint, estimate)
-    response_data = {"ticket key": new_ticket}
+    ticket = create_ticket(name, sprint, estimate)
+    response_data = {"data": ticket}
     return JSONResponse(response_data, status_code=200)
 
 
