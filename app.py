@@ -2,6 +2,7 @@ import uvicorn
 from fastapi import FastAPI, Form
 from fastapi.responses import RedirectResponse, JSONResponse
 from jira_bridge import create_ticket
+from sheet_bridge import add_ticket
 
 app = FastAPI()
 
@@ -18,8 +19,14 @@ def create_ticket_endpoint(
     sprint: bool = Form(True),
     estimate: int = Form(0),
 ):
+    response_data = {}
+
     ticket = create_ticket(name, sprint, estimate)
-    response_data = {"data": ticket}
+    response_data["jira"] = ticket
+
+    sheet = add_ticket(str(ticket["key"]))
+    response_data["GSheet"] = sheet
+
     return JSONResponse(response_data, status_code=200)
 
 
