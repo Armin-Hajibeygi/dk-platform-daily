@@ -1,7 +1,7 @@
 import uvicorn
-from typing import Optional
-from fastapi import FastAPI, File, Form, UploadFile, HTTPException, status, Request
-from fastapi.responses import RedirectResponse
+from fastapi import FastAPI, Form
+from fastapi.responses import RedirectResponse, JSONResponse
+from jira_bridge import create_ticket
 
 app = FastAPI()
 
@@ -13,12 +13,14 @@ def redirect():
 
 
 @app.post("/create_ticket")
-def create_ticket(
+def create_ticket_endpoint(
     name: str = Form(...),
+    sprint: bool = Form(True),
     estimate: int = Form(0),
 ):
-    resp = {"name": name, "estimate": estimate}
-    return resp
+    new_ticket = create_ticket(name, sprint, estimate)
+    response_data = {"ticket key": new_ticket}
+    return JSONResponse(response_data, status_code=200)
 
 
 if __name__ == "__main__":
