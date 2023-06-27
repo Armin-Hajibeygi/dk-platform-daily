@@ -10,7 +10,9 @@ platform_sprint_id = jira_connector.sprints(PLATFORM_BOARD)[-1].id
 platform_sprint_name = jira_connector.sprints(PLATFORM_BOARD)[-1].name
 
 
-def create_ticket(name: str, assignee: str, estimate: int, sprint: bool, done: bool) -> dict:
+def create_ticket(
+    name: str, assignee: str, estimate: int, sprint: bool, done: bool
+) -> dict:
     response = {}
 
     issue_dict = {
@@ -25,42 +27,65 @@ def create_ticket(name: str, assignee: str, estimate: int, sprint: bool, done: b
     response["key"] = new_issue_key
 
     if assignee:
-        add_assignee(new_issue_key, assignee)
-        response["assignee"] = f"Assigned to {assignee}"
+        response["assignee"] = add_assignee(new_issue_key, assignee)
 
     if estimate != 0:
-        add_estimate(new_issue_key, estimate)
-        response["estimate"] = f"Estimate {estimate} set"
+        response["estimate"] = add_estimate(new_issue_key, estimate)
 
     if sprint:
-        add_sprint(new_issue_key)
-        response["sprint"] = f"Added to {platform_sprint_name}"
+        response["sprint"] = add_sprint(new_issue_key)
 
     if done:
-        set_done(new_issue_key)
-        response["status"] = f"Mark as done"
+        response["status"] = set_done(new_issue_key)
 
     return response
 
 
-def user_map(name: str) -> str:
-    pass
+def get_username(name: str) -> str:
+    user_map = {
+        "armin": "armin.hajibeygi",
+        "ali": "a.daneshmand",
+        "parsa": "mo.rostami",
+        "bahram": "amir.bahrami",
+        "milad": "m.teimouri",
+    }
+    return user_map.get(name.lower(), None)
 
 
-def add_assignee(issue_key: str, assignee: str) -> None:
-    pass
-
-
-def add_estimate(issue_key: str, estimate: int) -> None:
+def add_assignee(issue_key: str, assignee: str) -> str:
+    username = get_username(assignee)
     issue = jira_connector.issue(issue_key)
-    issue.update(fields={"customfield_10106": estimate})
+    try:
+        issue.update(assignee={"name": username})
+        return f"Assigned to {username}"
+    except:
+        return "Can't Assign"
 
 
-def add_sprint(issue_key: str) -> None:
-    jira_connector.add_issues_to_sprint(
-        sprint_id=platform_sprint_id, issue_keys=[issue_key]
-    )
+def add_estimate(issue_key: str, estimate: int) -> str:
+    issue = jira_connector.issue(issue_key)
+    ESTIMATE_FIELD = "customfield_10106"
+
+    try:
+        issue.update(fields={ESTIMATE_FIELD: estimate})
+        return f"Estimate {estimate} set"
+    except:
+        return "Can't set the estimate"
 
 
-def set_done(issue_key: str) -> None:
-    jira_connector.transition_issue(issue_key, TO_DONE_ID)
+def add_sprint(issue_key: str) -> str:
+    try:
+        jira_connector.add_issues_to_sprint(
+            sprint_id=platform_sprint_id, issue_keys=[issue_key]
+        )
+        return f"Added to {platform_sprint_name}"
+    except:
+        return "Can't set the sprint"
+
+
+def set_done(issue_key: str) -> str:
+    try:
+        jira_connector.transition_issue(issue_key, TO_DONE_ID)
+        return "Mark as done"
+    except:
+        return "Can't move to done"
