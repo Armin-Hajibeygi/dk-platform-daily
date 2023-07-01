@@ -11,7 +11,7 @@ platform_sprint_name = jira_connector.sprints(PLATFORM_BOARD)[-1].name
 
 
 def create_ticket(
-    name: str, assignee: str, estimate: int, sprint: bool, done: bool
+    name: str, assignee: str, estimate: int, set_as_support: bool, sprint: bool, done: bool
 ) -> dict:
     response = {}
 
@@ -31,6 +31,9 @@ def create_ticket(
 
     if estimate != 0:
         response["estimate"] = add_estimate(new_issue_key, estimate)
+
+    if set_as_support:
+        response["epic"] = set_support_epic(new_issue_key)
 
     if sprint:
         response["sprint"] = add_sprint(new_issue_key)
@@ -71,6 +74,20 @@ def add_estimate(issue_key: str, estimate: int) -> str:
         return f"Estimate {estimate} set"
     except:
         return "Can't set the estimate"
+
+
+def set_support_epic(issue_key: str) -> str:
+    EPIC_FIELD = "customfield_10102"
+    SUPPORT_EPIC_KEY = "PLAT-362"
+    epic = jira_connector.issue(SUPPORT_EPIC_KEY)
+    issue = jira_connector.issue(issue_key)
+
+    try:
+        issue.update(fields={EPIC_FIELD: SUPPORT_EPIC_KEY})
+        return "Support Epic Set"
+    except Exception as e:
+        return f"{epic.id} / {str(e)}"
+
 
 
 def add_sprint(issue_key: str) -> str:

@@ -18,12 +18,13 @@ def create_ticket_endpoint(
     name: str = Form(...),
     assignee: str = Form(...),
     estimate: int = Form(0),
+    set_as_support: bool = Form(False),
     sprint: bool = Form(True),
     done: bool = Form(False),
 ):
     response_data = {}
 
-    ticket = create_ticket(name, assignee, estimate, sprint, done)
+    ticket = create_ticket(name, assignee, estimate, set_as_support,sprint, done)
     response_data["jira"] = ticket
 
     sheet = add_ticket(str(ticket["key"]))
