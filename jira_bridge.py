@@ -85,14 +85,13 @@ def add_estimate(issue_key: str, estimate: int) -> str:
 def set_support_epic(issue_key: str) -> str:
     EPIC_FIELD = "customfield_10102"
     SUPPORT_EPIC_KEY = "PLAT-362"
-    epic = jira_connector.issue(SUPPORT_EPIC_KEY)
     issue = jira_connector.issue(issue_key)
 
     try:
         issue.update(fields={EPIC_FIELD: SUPPORT_EPIC_KEY})
         return "Support Epic Set"
-    except Exception as e:
-        return f"{epic.id} / {str(e)}"
+    except:
+        return f"Can't set Support Epic"
 
 
 def add_sprint(issue_key: str) -> str:
