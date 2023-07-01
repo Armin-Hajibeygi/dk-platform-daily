@@ -24,7 +24,7 @@ def create_ticket(
 
     new_issue = jira_connector.create_issue(fields=issue_dict)
     new_issue_key = str(new_issue.key)
-    response["key"] = new_issue_key
+    response["key"] = f"https://dkjira.digikala.com/browse/{new_issue_key}"
 
     if assignee:
         response["assignee"] = add_assignee(new_issue_key, assignee)
