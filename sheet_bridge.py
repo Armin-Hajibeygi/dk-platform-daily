@@ -8,7 +8,7 @@ def add_ticket(issue_key: str):
     try:
         sheet, last_row_index = get_last_row()
     except Exception as e:
-        return e.args
+        return str(e)
 
     row = [issue_key]
 
@@ -16,7 +16,7 @@ def add_ticket(issue_key: str):
         insert_ticket(row=row, index=last_row_index, sheet=sheet)
         return f"{issue_key} added to sheet"
     except Exception as e:
-        return e.args
+        return str(e)
 
 
 def insert_ticket(row, index, sheet):
