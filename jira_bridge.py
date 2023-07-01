@@ -11,7 +11,12 @@ platform_sprint_name = jira_connector.sprints(PLATFORM_BOARD)[-1].name
 
 
 def create_ticket(
-    name: str, assignee: str, estimate: int, set_as_support: bool, sprint: bool, done: bool
+    name: str,
+    assignee: str,
+    estimate: int,
+    set_as_support: bool,
+    sprint: bool,
+    done: bool,
 ) -> dict:
     response = {}
 
@@ -87,7 +92,6 @@ def set_support_epic(issue_key: str) -> str:
         return "Support Epic Set"
     except Exception as e:
         return f"{epic.id} / {str(e)}"
-
 
 
 def add_sprint(issue_key: str) -> str:

@@ -24,7 +24,7 @@ def create_ticket_endpoint(
 ):
     response_data = {}
 
-    ticket = create_ticket(name, assignee, estimate, set_as_support,sprint, done)
+    ticket = create_ticket(name, assignee, estimate, set_as_support, sprint, done)
     response_data["jira"] = ticket
 
     sheet = add_ticket(str(ticket["key"]))
