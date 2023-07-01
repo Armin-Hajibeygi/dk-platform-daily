@@ -16,19 +16,21 @@ def redirect():
 @app.post("/create_ticket")
 def create_ticket_endpoint(
     name: str = Form(...),
-    assignee: str = Form(...),
+    assignee: str = Form(None),
     estimate: int = Form(0),
     set_as_support: bool = Form(False),
     sprint: bool = Form(True),
     done: bool = Form(False),
+    add_to_sheet: bool = Form(False),
 ):
     response_data = {}
 
     ticket = create_ticket(name, assignee, estimate, set_as_support, sprint, done)
     response_data["jira"] = ticket
 
-    sheet = add_ticket(str(ticket["key"]))
-    response_data["GSheet"] = sheet
+    if add_to_sheet:
+        sheet = add_ticket(str(ticket["key"]))
+        response_data["GSheet"] = sheet
 
     return JSONResponse(response_data, status_code=200)
 
