@@ -40,6 +40,7 @@ def create_ticket(
 
     if set_as_support:
         response["epic"] = set_support_epic(new_issue_key)
+        response["impact"] = set_impact(new_issue_key)
 
     if sprint:
         response["sprint"] = add_sprint(new_issue_key)
@@ -92,6 +93,18 @@ def set_support_epic(issue_key: str) -> str:
         return "Support Epic Set"
     except:
         return f"Can't set Support Epic"
+
+
+def set_impact(issue_key: str) -> str:
+    IMPACT_FIELD = "customfield_10201"
+    SUPPORT_IMPACT = "30"
+    issue = jira_connector.issue(issue_key)
+
+    try:
+        issue.update(fields={IMPACT_FIELD: {"value": SUPPORT_IMPACT}})
+        return f"Set impact 30"
+    except:
+        return f"Can't set the impact"
 
 
 def add_sprint(issue_key: str) -> str:
