@@ -13,7 +13,7 @@ platform_sprint_name = jira_connector.sprints(PLATFORM_BOARD)[-1].name
 def create_ticket(
     name: str,
     assignee: str,
-    estimate: int,
+    estimate: float,
     set_as_support: bool,
     sprint: bool,
     done: bool,
@@ -72,7 +72,7 @@ def add_assignee(issue_key: str, assignee: str) -> str:
         return "Can't Assign"
 
 
-def add_estimate(issue_key: str, estimate: int) -> str:
+def add_estimate(issue_key: str, estimate: float) -> str:
     issue = jira_connector.issue(issue_key)
     ESTIMATE_FIELD = "customfield_10106"
 

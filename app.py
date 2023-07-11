@@ -17,7 +17,7 @@ def redirect():
 def create_ticket_endpoint(
     name: str = Form(...),
     assignee: str = Form(None),
-    estimate: int = Form(0),
+    estimate: float = Form(0),
     set_as_support: bool = Form(False),
     sprint: bool = Form(True),
     done: bool = Form(False),
