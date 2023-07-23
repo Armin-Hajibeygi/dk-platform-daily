@@ -58,6 +58,8 @@ def get_username(name: str) -> str:
         "parsa": "mo.rostami",
         "bahram": "amir.bahrami",
         "milad": "m.teimouri",
+        "hashem": "MohammadMahdi.Saeedi",
+        "mehdi": "MohammadMahdi.Saeedi",
     }
     return user_map.get(name.lower(), None)
 
