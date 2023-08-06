@@ -10,18 +10,18 @@ def add_ticket(issue_key: str):
     except Exception as e:
         return str(e)
 
-    row = [issue_key]
+    values = [issue_key]
 
     try:
-        insert_ticket(row=row, index=last_row_index, sheet=sheet)
+        insert_ticket(values=values, row=last_row_index, sheet=sheet)
         return f"{issue_key} added to sheet"
     except Exception as e:
         return str(e)
 
 
-def insert_ticket(row, index, sheet):
-    for i in range(len(row)):
-        sheet.update_cell(index, i + 1, row[i])
+def insert_ticket(values, row, sheet):
+    for value_index in range(len(values)):
+        sheet.update_cell(row=row, col=value_index+1, value=values[value_index])
 
 
 def get_last_row():
@@ -32,5 +32,6 @@ def get_last_row():
 
 
 def get_last_created_sheet_id():
+    DESIRED_SHEET_POSITION = -2
     sheets = client.open(SHEET_NAME).worksheets()
-    return sheets[-2].id
+    return sheets[DESIRED_SHEET_POSITION].id
