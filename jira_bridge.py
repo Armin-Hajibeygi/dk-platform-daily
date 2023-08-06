@@ -6,9 +6,6 @@ jira_connector = JIRA(
     options={"server": SERVER},
 )
 
-platform_sprint_id = jira_connector.sprints(PLATFORM_BOARD)[-1].id
-platform_sprint_name = jira_connector.sprints(PLATFORM_BOARD)[-1].name
-
 
 def create_ticket(
     name: str,
@@ -110,6 +107,9 @@ def set_impact(issue_key: str) -> str:
 
 
 def add_sprint(issue_key: str) -> str:
+    platform_sprint_id = jira_connector.sprints(PLATFORM_BOARD)[-1].id
+    platform_sprint_name = jira_connector.sprints(PLATFORM_BOARD)[-1].name
+
     try:
         jira_connector.add_issues_to_sprint(
             sprint_id=platform_sprint_id, issue_keys=[issue_key]
