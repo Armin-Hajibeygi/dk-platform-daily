@@ -22,7 +22,7 @@ all_words = []
 for issue in issues:
     estimate = float(issue.fields.customfield_10106)
     estimate_bucket = estimate / 0.5
-    issue_words = issue.fields.summary.split()
+    issue_words = issue.fields.summary.split(" ")
 
     cleaned_words = [re.sub(r"[^a-zA-Z]", "", word).lower() for word in issue_words]
     duplicated_words = [
@@ -45,11 +45,11 @@ filter_words = [
     "minor",
     "new",
     "use",
-    "v",
-    "v4",
     "epic",
     "not",
     "and",
+    "v",
+    "hnv",
 ]
 for filter_word in filter_words:
     word_counts.pop(filter_word, None)
