@@ -21,7 +21,7 @@ def add_ticket(issue_key: str):
 
 def insert_ticket(values, row, sheet):
     for value_index in range(len(values)):
-        sheet.update_cell(row=row, col=value_index+1, value=values[value_index])
+        sheet.update_cell(row=row, col=value_index + 1, value=values[value_index])
 
 
 def get_last_row():
