@@ -1,5 +1,5 @@
 uvicorn~=0.22.0
-fastapi~=0.95.2
+fastapi~=0.109.1
 python-multipart~=0.0.5
 jira~=3.5.0
 gspread~=5.8.0
